@@ -1,10 +1,21 @@
 # ExifTool Useful Commands
 
-I found myself trying to write down a process for saving my digital camera pictures. I have historically used exiftool to do this. I don't take digital camera photos every day, but I do take them regularly during any given year.
+I have always used exiftool to organize my digital camera photos, and I found myself writing down useful commands in my notes or documents. So I decided to put it on GitHub to share and keep it update for myself as well.
 
-I have a couple DSLR cameras and a couple sport cameras, go pros, and drones. So I needed a good way to collect them all on my hard drives and store them. This document helps me remember my process, and the commands I've used to manipulate folder structures of photos on my hard disks.
+I have a couple DSLR cameras and a couple sport cameras, go pros, and drones. So I needed a good way to collect them all on my hard drives and store them. 
 
+I don't take digital camera photos every day, but I do take them regularly during any given year, so that influences the folder structure  I use to store them on my disks.
+
+## REFS
 This document references the application [ExifTool](https://exiftool.org) written by [Phil Harvey](https://exiftool.org/#background). I have mostly picked up the commands below from forum posts from the [ExifTool Forum](https://exiftool.org/forum).
+
+## WRITING TAGS
+
+### Set the system file creation/modify date using the DateTimeOriginal tag.
+
+```
+exiftool "-FileModifyDate<DateTimeOriginal" "-FileCreateDate<DateTimeOriginal" DIR
+```
 
 ## REGEX
 
@@ -168,15 +179,20 @@ exiftool -overwrite_original '-createdate<datetimeoriginal' -r -if '(not $create
 
 ### TLDR
 1. Group photos into folders using comment/memorable-title.
-    > [!NOTE] This will give us an identifier for each image to use in our directory structure.
+    > [!NOTE]
+    > This will give us an identifier for each image to use in our directory structure.
 2. Run ```exiftool '-comment<Directory' -r .\``` to add a comment tag to each photo using the directory name you put them in.
-    > [!NOTE] Any file without a comment tag will not receive the tag, such as raw images.
+    > [!NOTE]
+    > Any file without a comment tag will not receive the tag, such as raw images.
 3. Run ```exiftool '-XPComment<Directory' --ext nef -r .\``` to add the custom comment to the RAW images.
-    > [!NOTE] The 'nef' part is the Nikon raw file extension, use your camera's raw file extension here.
+    > [!NOTE]
+    > The 'nef' part is the Nikon raw file extension, use your camera's raw file extension here.
 4. Run ```exiftool '-FileName<${DateTimeOriginal}\${Comment}\%f.%e' -r -d %Y dir``` to move files with the Comment tag to the current path.
-    > [!NOTE] My .MOV files include the Comment tag, so they are moved using this command.
+    > [!NOTE]
+    > My .MOV files include the Comment tag, so they are moved using this command.
 5. Run ```exiftool '-FileName<${DateTimeOriginal}\${XPComment}\%f.%e' -r -d %Y dir``` to move files with the custom XPComment tag.
-    > [!NOTE] My RAW images use the XPComment, you might have to find the comment field for your type of raw image.
+    > [!NOTE]
+    > My RAW images use the XPComment, you might have to find the comment field for your type of raw image.
 
 ### My Process Explained
 
